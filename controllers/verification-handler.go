@@ -13,7 +13,7 @@ func VerificationHandler(c *gin.Context) {
 	token := query["hub.verify_token"]
 	challenge := query["hub.challenge"]
 
-	if len(mode) != 1 || len(token) != 1 || len(challenge) != 1 || mode[0] != "subscribe" || token[0] != config.CORRECT_TOKEN {
+	if len(mode) != 1 || len(token) != 1 || len(challenge) != 1 || mode[0] != "subscribe" || token[0] != config.VERIFICATION_TOKEN {
 		c.AbortWithStatus(403)
 	} else {
 		c.String(200, challenge[0])

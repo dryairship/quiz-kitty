@@ -7,7 +7,7 @@ import (
 )
 
 var PORT string
-var CORRECT_TOKEN string
+var VERIFICATION_TOKEN string
 var ACCESS_TOKEN string
 
 func init() {
@@ -22,6 +22,6 @@ func init() {
 	viper.AutomaticEnv()
 
 	PORT = viper.GetString("port")
-	CORRECT_TOKEN = viper.GetString("correct_token")
+	VERIFICATION_TOKEN = viper.GetString("verification_token")
 	ACCESS_TOKEN = viper.GetString("access_token")
 }
