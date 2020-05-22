@@ -1,6 +1,7 @@
 package models
 
 import (
+	"html"
 	"math/rand"
 )
 
@@ -15,7 +16,7 @@ type Question struct {
 
 func (question Question) ToTextMessage() (TextMessage, string) {
 	var text string
-	text += question.Question
+	text += html.UnescapeString(question.Question)
 	text += "\n\n"
 
 	perm := rand.Perm(len(question.IncorrectAnswers) + 1)
@@ -27,12 +28,12 @@ func (question Question) ToTextMessage() (TextMessage, string) {
 			correctAnswer = string(currentChar)
 			text += correctAnswer
 			text += " ) "
-			text += question.CorrectAnswer
+			text += html.UnescapeString(question.CorrectAnswer)
 			text += "\n"
 		} else {
 			text += string(currentChar)
 			text += " ) "
-			text += question.IncorrectAnswers[perm[i]-1]
+			text += html.UnescapeString(question.IncorrectAnswers[perm[i]-1])
 			text += "\n"
 		}
 		currentChar++

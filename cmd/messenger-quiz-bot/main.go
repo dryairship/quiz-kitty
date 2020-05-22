@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"math/rand"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -10,6 +12,8 @@ import (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	r := gin.Default()
 
 	r.GET("/webhook", controllers.VerificationHandler)
