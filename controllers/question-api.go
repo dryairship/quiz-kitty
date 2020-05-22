@@ -32,7 +32,7 @@ func GetQuestion() (models.Question, error) {
 		log.Println("[ERROR] Invalid response from Question API. Response: ", string(body))
 		return models.Question{}, errors.New(string(body))
 	}
-	log.Println(string(body))
+
 	err = json.Unmarshal(body, &apiResponseBody)
 	if err != nil {
 		log.Println("[ERROR] Cannnot parse Question API Response. Error: ", err)

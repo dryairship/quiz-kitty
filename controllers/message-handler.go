@@ -21,7 +21,8 @@ func askIfUserWantsQuestion(user *models.User) {
 		Text: "Hey! Do you want me to ask you a question?\n\nA ) Yes\nB ) No",
 	})
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
-		State: models.USER_STATE_WANT_QUESTION,
+		State:             models.USER_STATE_WANT_QUESTION,
+		MaxAcceptableChar: 'B',
 	})
 }
 
@@ -68,7 +69,8 @@ func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswe
 		})
 	}
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
-		State: models.USER_STATE_WANT_QUESTION,
+		State:             models.USER_STATE_WANT_QUESTION,
+		MaxAcceptableChar: 'B',
 	})
 }
 
