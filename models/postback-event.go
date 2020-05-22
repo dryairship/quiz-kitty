@@ -5,5 +5,7 @@ type PostbackPayload struct {
 }
 
 type PostbackEvent struct {
-	Postback PostbackPayload `json:"postback"`
+	Sender    User            `json:"sender"`
+	Timestamp int64           `json:"timestamp"`
+	Postback  PostbackPayload `json:"postback"`
 }
