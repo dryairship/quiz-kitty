@@ -9,6 +9,9 @@ import (
 var PORT string
 var VERIFICATION_TOKEN string
 var ACCESS_TOKEN string
+var REDIS_ADDRESS string
+var REDIS_PASSWORD string
+var REDIS_DB_INDEX int
 
 func init() {
 	viper.SetConfigName("quiz-bot-config")
@@ -24,4 +27,8 @@ func init() {
 	PORT = viper.GetString("port")
 	VERIFICATION_TOKEN = viper.GetString("verification_token")
 	ACCESS_TOKEN = viper.GetString("access_token")
+
+	REDIS_ADDRESS = viper.GetString("redis.address")
+	REDIS_PASSWORD = viper.GetString("redis.password")
+	REDIS_DB_INDEX = viper.GetInt("redis.db_index")
 }
