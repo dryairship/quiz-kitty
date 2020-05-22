@@ -21,7 +21,6 @@ func init() {
 		log.Println("[WARNING] Unable to locate configuration file")
 	}
 
-	viper.SetEnvPrefix("quizbot")
 	viper.AutomaticEnv()
 
 	PORT = viper.GetString("port")
