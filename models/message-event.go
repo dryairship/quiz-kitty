@@ -1,9 +1,11 @@
 package models
 
-type MessageText struct {
+type TextMessage struct {
 	Text string `json:"text"`
 }
 
 type MessageEvent struct {
-	Message MessageText `json:"message"`
+	Sender    User        `json:"sender"`
+	Timestamp int64       `json:"timestamp"`
+	Message   TextMessage `json:"message"`
 }

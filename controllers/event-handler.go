@@ -13,7 +13,11 @@ func EventHandler(c *gin.Context) {
 	var body models.MessageRequestBody
 	err := c.ShouldBindBodyWith(&body, binding.JSON)
 	if err == nil {
-		fmt.Println(body)
+		outgoingMsg := models.OutgoingMessage(models.OutgoingTextMessage{
+			Recipient: body.Entry[0].Messaging[0].Sender,
+			Message:   body.Entry[0].Messaging[0].Message,
+		})
+		SendMessage(&outgoingMsg)
 	} else {
 		var body models.PostbackRequestBody
 		err := c.BindJSON(&body)

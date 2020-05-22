@@ -8,6 +8,7 @@ import (
 
 var PORT string
 var CORRECT_TOKEN string
+var ACCESS_TOKEN string
 
 func init() {
 	viper.SetConfigName("quiz-bot-config")
@@ -22,4 +23,5 @@ func init() {
 
 	PORT = viper.GetString("port")
 	CORRECT_TOKEN = viper.GetString("correct_token")
+	ACCESS_TOKEN = viper.GetString("access_token")
 }
