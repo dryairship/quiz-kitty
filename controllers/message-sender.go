@@ -32,3 +32,11 @@ func SendMessage(msg *models.OutgoingMessage) {
 		log.Printf("[ERROR] Graph API Error: %s\n", string(responseBody))
 	}
 }
+
+func SendTextMessageToUser(user *models.User, textMessage *models.TextMessage) {
+	msg := models.OutgoingMessage(models.OutgoingTextMessage{
+		Recipient: *user,
+		Message:   *textMessage,
+	})
+	SendMessage(&msg)
+}

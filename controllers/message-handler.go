@@ -7,24 +7,69 @@ import (
 	"github.com/dryairship/messenger-quiz-bot/models"
 )
 
-func askIfUserWantsQuestion(user *models.User) {
+func handleQuestionAPIProblem(user *models.User) {
+	SendTextMessageToUser(user, &models.TextMessage{
+		Text: "I'm sorry I cannot handle your request right now. There is some problem with our questions API.",
+	})
+	db.SetRedisUserData(user.Id, &models.RedisUserData{
+		State: models.USER_STATE_IDLE,
+	})
+}
 
+func askIfUserWantsQuestion(user *models.User) {
+	SendTextMessageToUser(user, &models.TextMessage{
+		Text: "Hey! Do you want me to ask you a question?\n\nA ) Yes\nB ) No",
+	})
+	db.SetRedisUserData(user.Id, &models.RedisUserData{
+		State: models.USER_STATE_WANT_QUESTION,
+	})
 }
 
 func handleUserWantsNewQuestion(user *models.User) {
+	question, err := GetQuestion()
+	if err != nil {
+		handleQuestionAPIProblem(user)
+		return
+	}
 
+	textMessage, correctChar, maxChar, correctText := question.ToTextMessage()
+	SendTextMessageToUser(user, &textMessage)
+	db.SetRedisUserData(user.Id, &models.RedisUserData{
+		State:             models.USER_STATE_ACTIVE_QUESTION,
+		CorrectAnswerChar: correctChar,
+		CorrectAnswerText: correctText,
+		MaxAcceptableChar: maxChar,
+	})
 }
 
 func handleUserDoesNotWantNewQuestion(user *models.User) {
-
+	SendTextMessageToUser(user, &models.TextMessage{
+		Text: "Bye! Come back again soon!",
+	})
+	db.SetRedisUserData(user.Id, &models.RedisUserData{
+		State: models.USER_STATE_IDLE,
+	})
 }
 
 func handleInvalidUserAnswer(user *models.User, maxChar byte) {
-
+	SendTextMessageToUser(user, &models.TextMessage{
+		Text: "That is not a valid response. Please choose a letter from A-" + string(maxChar) + ".",
+	})
 }
 
 func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswerCorrect bool) {
-
+	if isAnswerCorrect {
+		SendTextMessageToUser(user, &models.TextMessage{
+			Text: "That's right! :D\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
+		})
+	} else {
+		SendTextMessageToUser(user, &models.TextMessage{
+			Text: "That's incorrect! :(\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
+		})
+	}
+	db.SetRedisUserData(user.Id, &models.RedisUserData{
+		State: models.USER_STATE_WANT_QUESTION,
+	})
 }
 
 func HandleTextMessage(user *models.User, message *string) {
