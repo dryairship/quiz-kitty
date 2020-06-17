@@ -36,5 +36,5 @@ func (question Question) ToTextMessage() (TextMessage, byte, byte, string) {
 		currentChar++
 	}
 
-	return TextMessage{Text: text}, correctAnswer, currentChar - 1, question.CorrectAnswer
+	return TextMessage{Text: text}, correctAnswer, currentChar - 1, html.UnescapeString(question.CorrectAnswer)
 }
