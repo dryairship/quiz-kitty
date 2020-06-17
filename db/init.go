@@ -18,7 +18,7 @@ import (
 var redisClient *redis.Client
 var mongoClient *mongo.Client
 
-func connectToRedis() {
+func connectToRedis() bool {
 	redisClient = redis.NewClient(&redis.Options{
 		Addr:     config.REDIS_ADDRESS,
 		Password: config.REDIS_PASSWORD,
@@ -27,13 +27,15 @@ func connectToRedis() {
 
 	_, err := redisClient.Ping().Result()
 	if err != nil {
-		log.Fatalf("[ERROR] Cannot Ping Redis. Error: %v\n", err)
+		log.Printf("[ERROR] Cannot Ping Redis. Error: %v\n", err)
+		return false
 	} else {
 		log.Println("[INFO] Successfully pinged Redis")
+		return true
 	}
 }
 
-func connectToMongo() {
+func connectToMongo() bool {
 	protocol := "mongodb"
 	if config.MONGO_DNS_SRV {
 		protocol += "+srv"
@@ -57,12 +59,15 @@ func connectToMongo() {
 		config.MONGO_EXTRA_OPTIONS,
 	)
 
+	var err error
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(connectURL))
+	mongoClient, err = mongo.Connect(ctx, options.Client().ApplyURI(connectURL))
 	if err != nil {
-		log.Fatalf("[ERROR] Cannot connect to Mongo. Error: %v\n", err)
+		log.Printf("[ERROR] Cannot connect to Mongo. Error: %v\n", err)
+		return false
 	}
 
 	ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
@@ -70,13 +75,19 @@ func connectToMongo() {
 
 	err = mongoClient.Ping(ctx, readpref.Primary())
 	if err != nil {
-		log.Fatalf("[ERROR] Cannot Ping Mongo. Error: %v\n", err)
+		log.Printf("[ERROR] Cannot Ping Mongo. Error: %v\n", err)
+		return false
 	} else {
 		log.Println("[INFO] Successfully pinged Mongo")
+		return true
 	}
 }
 
 func init() {
-	connectToRedis()
-	connectToMongo()
+	for !connectToRedis() {
+		log.Println("[INFO] Retrying to connect to Redis")
+	}
+	for !connectToMongo() {
+		log.Println("[INFO] Retrying to connect to Mongo")
+	}
 }
