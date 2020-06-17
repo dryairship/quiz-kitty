@@ -1,7 +1,18 @@
 port: 8000
+
 verification_token: RANDOM_VERIFICATION_TOKEN
 access_token: BOT_ACCESS_TOKEN_PROVIDED_BY_FACEBOOK
+
 redis:
   address: "172.25.25.101:6379"
-  password: ""
+  password: "" # password to connect to the database, if any
   db_index: 0
+
+mongo:
+  address: "localhost:27017"
+  dns_srv: false # set true if address requires DNS resolution
+  using_auth: false # set true if using authentication
+  db_name: "quizkitty"
+  user: "username" # required if using authentication
+  password: "password" # required if using authentication
+  url_params: "" # extra parameters used in the mongo connect URL (should begin with a '?' if non-empty)
