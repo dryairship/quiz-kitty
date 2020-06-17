@@ -6,4 +6,5 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/spf13/viper v1.7.0
+	go.mongodb.org/mongo-driver v1.3.4
 )
