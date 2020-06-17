@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/dryairship/messenger-quiz-bot/models"
+	"github.com/dryairship/quiz-kitty/models"
 )
 
 func SetRedisUserData(user string, data *models.RedisUserData) {

@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dryairship/messenger-quiz-bot/config"
-	"github.com/dryairship/messenger-quiz-bot/models"
+	"github.com/dryairship/quiz-kitty/config"
+	"github.com/dryairship/quiz-kitty/models"
 )
 
 var QUERY_URL string = "https://graph.facebook.com/v2.6/me/messages?access_token=" + config.ACCESS_TOKEN

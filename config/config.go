@@ -14,7 +14,7 @@ var REDIS_PASSWORD string
 var REDIS_DB_INDEX int
 
 func init() {
-	viper.SetConfigName("quiz-bot-config")
+	viper.SetConfigName("quiz-kitty-config")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {

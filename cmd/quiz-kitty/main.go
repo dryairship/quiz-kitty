@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/dryairship/messenger-quiz-bot/config"
-	"github.com/dryairship/messenger-quiz-bot/controllers"
+	"github.com/dryairship/quiz-kitty/config"
+	"github.com/dryairship/quiz-kitty/controllers"
 )
 
 func main() {

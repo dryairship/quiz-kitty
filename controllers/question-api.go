@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dryairship/messenger-quiz-bot/models"
+	"github.com/dryairship/quiz-kitty/models"
 )
 
 var QUESTION_API_URL string = "https://opentdb.com/api.php?amount=1"

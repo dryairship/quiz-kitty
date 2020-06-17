@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-redis/redis"
 
-	"github.com/dryairship/messenger-quiz-bot/config"
+	"github.com/dryairship/quiz-kitty/config"
 )
 
 var redisClient *redis.Client

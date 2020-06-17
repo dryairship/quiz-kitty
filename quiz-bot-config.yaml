@@ -1,7 +1,0 @@
-port: 8000
-verification_token: "A random string to be used as verification token"
-access_token: "The bot access token provided by Facebook"
-redis:
-  address: "172.25.25.101:6379"
-  password: ""
-  db_index: 0

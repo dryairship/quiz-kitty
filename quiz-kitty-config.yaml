@@ -1,0 +1,7 @@
+port: 8000
+verification_token: RANDOM_VERIFICATION_TOKEN
+access_token: BOT_ACCESS_TOKEN_PROVIDED_BY_FACEBOOK
+redis:
+  address: "172.25.25.101:6379"
+  password: ""
+  db_index: 0

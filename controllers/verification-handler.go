@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/dryairship/messenger-quiz-bot/config"
+	"github.com/dryairship/quiz-kitty/config"
 )
 
 func VerificationHandler(c *gin.Context) {

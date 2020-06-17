@@ -3,8 +3,8 @@ package controllers
 import (
 	"strings"
 
-	"github.com/dryairship/messenger-quiz-bot/db"
-	"github.com/dryairship/messenger-quiz-bot/models"
+	"github.com/dryairship/quiz-kitty/db"
+	"github.com/dryairship/quiz-kitty/models"
 )
 
 func handleQuestionAPIProblem(user *models.User) {

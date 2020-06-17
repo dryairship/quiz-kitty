@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 
-	"github.com/dryairship/messenger-quiz-bot/models"
+	"github.com/dryairship/quiz-kitty/models"
 )
 
 func EventHandler(c *gin.Context) {

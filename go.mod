@@ -1,4 +1,4 @@
-module github.com/dryairship/messenger-quiz-bot
+module github.com/dryairship/quiz-kitty
 
 go 1.14
 
