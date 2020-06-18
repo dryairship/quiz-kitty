@@ -18,3 +18,8 @@ type RedisUserData struct {
 	CorrectAnswerChar byte
 	MaxAcceptableChar byte
 }
+
+type MongoUserScore struct {
+	Id    string `bson:"_id"`
+	Score int32  `bson:"score"`
+}

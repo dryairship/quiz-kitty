@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/dryairship/quiz-kitty/db"
@@ -63,10 +64,12 @@ func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswe
 		SendTextMessageToUser(user, &models.TextMessage{
 			Text: "That's right! :D\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
 		})
+		db.UpdateUserScore(user.Id, 2)
 	} else {
 		SendTextMessageToUser(user, &models.TextMessage{
 			Text: "That's incorrect! :(\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
 		})
+		db.UpdateUserScore(user.Id, -1)
 	}
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
 		State:             models.USER_STATE_WANT_QUESTION,
@@ -74,10 +77,22 @@ func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswe
 	})
 }
 
+func handleUserScore(user *models.User) {
+	score := db.GetUserScore(user.Id)
+	SendTextMessageToUser(user, &models.TextMessage{
+		Text: fmt.Sprintf("Your current score is %d!", score),
+	})
+}
+
 func HandleTextMessage(user *models.User, message *string) {
 	userData, err := db.GetRedisUserData(user.Id)
 	if err != nil {
 		askIfUserWantsQuestion(user)
+		return
+	}
+
+	if strings.Contains(strings.ToLower(*message), "score") {
+		handleUserScore(user)
 		return
 	}
 

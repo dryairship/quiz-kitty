@@ -17,6 +17,7 @@ import (
 
 var redisClient *redis.Client
 var mongoClient *mongo.Client
+var mongoScoresCollection *mongo.Collection
 
 func connectToRedis() bool {
 	redisClient = redis.NewClient(&redis.Options{
@@ -79,6 +80,7 @@ func connectToMongo() bool {
 		return false
 	} else {
 		log.Println("[INFO] Successfully pinged Mongo")
+		mongoScoresCollection = mongoClient.Database(config.MONGO_DB_NAME).Collection("scores")
 		return true
 	}
 }
