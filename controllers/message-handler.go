@@ -10,7 +10,7 @@ import (
 
 func handleQuestionAPIProblem(user *models.User) {
 	SendTextMessageToUser(user, &models.TextMessage{
-		Text: "I'm sorry I cannot handle your request right now. There is some problem with our questions API.",
+		Text: MESSAGE_API_PROBLEM,
 	})
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
 		State: models.USER_STATE_IDLE,
@@ -19,7 +19,7 @@ func handleQuestionAPIProblem(user *models.User) {
 
 func askIfUserWantsQuestion(user *models.User) {
 	SendTextMessageToUser(user, &models.TextMessage{
-		Text: "Hey! Do you want me to ask you a question?\n\nA ) Yes\nB ) No",
+		Text: MESSAGE_WANT_QUESTION,
 	})
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
 		State:             models.USER_STATE_WANT_QUESTION,
@@ -46,7 +46,7 @@ func handleUserWantsNewQuestion(user *models.User) {
 
 func handleUserDoesNotWantNewQuestion(user *models.User) {
 	SendTextMessageToUser(user, &models.TextMessage{
-		Text: "Bye! Come back again soon!",
+		Text: MESSAGE_BYE,
 	})
 	db.SetRedisUserData(user.Id, &models.RedisUserData{
 		State: models.USER_STATE_IDLE,
@@ -55,19 +55,19 @@ func handleUserDoesNotWantNewQuestion(user *models.User) {
 
 func handleInvalidUserAnswer(user *models.User, maxChar byte) {
 	SendTextMessageToUser(user, &models.TextMessage{
-		Text: "That is not a valid response. Please choose a letter from A-" + string(maxChar) + ".",
+		Text: fmt.Sprintf(MESSAGE_INVALID_ANSWER, maxChar),
 	})
 }
 
 func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswerCorrect bool) {
 	if isAnswerCorrect {
 		SendTextMessageToUser(user, &models.TextMessage{
-			Text: "That's right! :D\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
+			Text: fmt.Sprintf(MESSAGE_CORRECT_ANSWER, *correctAnswerText),
 		})
 		db.UpdateUserScore(user.Id, 2)
 	} else {
 		SendTextMessageToUser(user, &models.TextMessage{
-			Text: "That's incorrect! :(\n" + *correctAnswerText + " is the correct answer!\n\nDo you want me to ask you another question?\n\nA ) Yes\nB ) No",
+			Text: fmt.Sprintf(MESSAGE_INCORRECT_ANSWER, *correctAnswerText),
 		})
 		db.UpdateUserScore(user.Id, -1)
 	}
@@ -79,9 +79,16 @@ func handleValidUserAnswer(user *models.User, correctAnswerText *string, isAnswe
 
 func handleUserScore(user *models.User) {
 	score := db.GetUserScore(user.Id)
-	SendTextMessageToUser(user, &models.TextMessage{
-		Text: fmt.Sprintf("Your current score is %d!", score),
-	})
+
+	if score > 0 {
+		SendTextMessageToUser(user, &models.TextMessage{
+			Text: fmt.Sprintf(MESSAGE_POSITIVE_SCORE, score),
+		})
+	} else {
+		SendTextMessageToUser(user, &models.TextMessage{
+			Text: fmt.Sprintf(MESSAGE_NEGATIVE_SCORE, score),
+		})
+	}
 }
 
 func HandleTextMessage(user *models.User, message *string) {
